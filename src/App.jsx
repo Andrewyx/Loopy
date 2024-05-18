@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { FaArrowRight } from "react-icons/fa";
 import { FaSearch } from 'react-icons/fa';
 import Button from './components/button';
-import Input from './components/input'
+import { Input } from './components/input'
 
 import './App.css'
 
@@ -16,7 +16,9 @@ function App() {
   function handleClick() {
     console.log("From: " + from);
     console.log("To: " + to);
+
   }
+
   
   return (
     <>
