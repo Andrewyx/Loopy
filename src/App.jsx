@@ -1,13 +1,22 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
+import { FaArrowRight } from "react-icons/fa";
+import { FaSearch } from 'react-icons/fa';
+import Button from './components/button';
 import Input from './components/input'
 
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [username, setUsername] = useState('')
+
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
+
+  function handleClick() {
+    console.log("From: " + from);
+    console.log("To: " + to);
+  }
   
   return (
     <>
@@ -19,9 +28,11 @@ function App() {
         </div>
         <div className="w-3/4 mx-auto flex flex-row p-5 items-center align-center justify-evenly">
           {/* <h1 className="text-3xl">From</h1> */}
-          <Input className="w-1/4" value={username} setValue={setUsername} placeholder="From" /> 
+          <Input className="w-[40%]" value={from} setValue={setFrom} placeholder="From" /> 
+          <FaArrowRight className="text-3xl"/>
           {/* <h1 className="text-3xl">To</h1> */}
-          <Input className="w-1/4" value={username} setValue={setUsername} placeholder="To" /> 
+          <Input className="w-[40%]" value={to} setValue={setTo} placeholder="To" /> 
+          <Button onClick={handleClick}><FaSearch className="text-xl"/></Button>
         </div>
       </div>
     </>
