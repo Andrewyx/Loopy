@@ -1,33 +1,29 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import Input from './components/input'
+
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-
+  const [username, setUsername] = useState('')
+  
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="w-full h-screen bg-bg">
+        <div className="bg-white h-[10%] border-b-black border-b-4 mb-10 px-10 flex flex-row justify-between align-center items-center">
+          <h1 className="text-3xl text-black font-bold">Loopy: Rate your route!</h1>
+          {/* <div className="divider divider-horizontal divider-primary h-3/4"/> */}
+          {/* <h1>Find a Route</h1> */}
+        </div>
+        <div className="w-3/4 mx-auto flex flex-row p-5 items-center align-center justify-evenly">
+          {/* <h1 className="text-3xl">From</h1> */}
+          <Input className="w-1/4" value={username} setValue={setUsername} placeholder="From" /> 
+          {/* <h1 className="text-3xl">To</h1> */}
+          <Input className="w-1/4" value={username} setValue={setUsername} placeholder="To" /> 
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
