@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import 'dotenv/config'
 
 /**
  * Singleton for all Firebase-related tasks and information
@@ -12,7 +13,7 @@ export default class Firebase {
     #auth;
     #db;
     #firebaseConfig = {
-        apiKey: "AIzaSyBm7QmFuGXrCH8PGJQoXCtbEP_02UKOPXg",
+        apiKey: process.env.API_KEY,
         authDomain: "loopy-423720.firebaseapp.com",
         projectId: "loopy-423720",
         storageBucket: "loopy-423720.appspot.com",
@@ -22,9 +23,9 @@ export default class Firebase {
     
 
     constructor() {
-        this.app = initializeApp(firebaseConfig);
-        this.db = getFirestore(app);
-        this.auth = getAuth();   
+        this.#app = initializeApp(this.#firebaseConfig);
+        this.#db = getFirestore(this.#app);
+        this.#auth = getAuth();   
     }
 
     /**
@@ -71,4 +72,6 @@ export default class Firebase {
     getDatabase() {
         return this.#db;
     }
+
+    
 }
