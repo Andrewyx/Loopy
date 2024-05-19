@@ -1,17 +1,17 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, runTransaction } from "firebase/firestore";
+import { getFirestore, doc, runTransaction, addDoc, collection } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import 'dotenv/config'
 
 /**
  * Singleton for all Firebase-related tasks and information
  */
-
 export default class Firebase {
     static #instance;
     #app;
     #auth;
     #db;
+    #collection;
     #firebaseConfig = {
         apiKey: process.env.API_KEY,
         authDomain: "loopy-423720.firebaseapp.com",
@@ -25,6 +25,7 @@ export default class Firebase {
         this.#app = initializeApp(this.#firebaseConfig);
         this.#db = getFirestore(this.#app);
         this.#auth = getAuth();   
+        this.#collection ="busline";
     }
 
     /**
@@ -72,30 +73,61 @@ export default class Firebase {
         return this.#db;
     }
     
-    async getDocument(subCollectionPath="ratings", entryString) {
-        // Create a reference to the SF doc.
-        const docRef = doc(this.#db, subCollectionPath, entryString);
+    /**
+     * Getter for a particular document given a path
+     * 
+     * @param {*Series of string path(s) to get under 'busline' collection to get} path 
+     * 
+     * @returns An DocumentData Object containing all fields in the document.
+     */
+    async getDocument(...path) {
+        // Create a reference to the  doc.
+        const docRef = doc(this.#db, path);
 
         try {
-        const newPopulation = await runTransaction(db, async (transaction) => {
-            const sfDoc = await transaction.get(sfDocRef);
-            if (!sfDoc.exists()) {
+        const result = await runTransaction(this.#db, async (transaction) => {
+            const fetchedDoc = await transaction.get(docRef);
+            if (!fetchedDoc.exists()) {
             throw "Document does not exist!";
             }
-
-            const newPop = sfDoc.data().population + 1;
-            if (newPop <= 1000000) {
-            transaction.update(sfDocRef, { population: newPop });
-            return newPop;
-            } else {
-            return Promise.reject("Sorry! Population is too big");
-            }
+            return fetchedDoc.data();
         });
-
-        console.log("Population increased to ", newPopulation);
+        return result;
         } catch (e) {
-        // This will be a "population is too big" error.
-        console.error(e);
+            console.log("Transaction failed: ", e);
         }
+    }
+
+    /**
+     * Function for writing new rating to a given bus line
+     * 
+     * @param {*JSON containing rating information} content 
+     * @param {*String with the bus line to create a new rating for} busline 
+     * @param {*Optional field} subCollectionPath 
+     */
+    async writeNewRatingToBusline(content, busline, subCollectionPath="ratings") {
+        // Set the value of 'NYC'
+        const docRef = await addDoc(
+            collection(this.#db, this.#collection, busline, subCollectionPath), 
+            content,
+            { merge: true }
+        );
+        console.log("Document written with ID: ", docRef.id);
+    }
+
+    /**
+     * Function to add new Bus entry into the DB
+     * 
+     * @param {*Bus Number to add} busnum 
+     * @param {*One of the terminal stations of the bus} terminalOne 
+     * @param {*Another of the terminal stations of the bus} terimalTwo 
+     */
+    async writeNewBusline(busnum, terminalOne, terimalTwo) {
+        const busRef = await addDoc(collection(this.#db, this.#collection, { merge: true}), {
+            number: busnum,
+            terminal1: terminalOne,
+            terminal2: terimalTwo
+          });
+        console.log("Busline written with ID: ", busRef.id);
     }
 }
