@@ -5,6 +5,7 @@ import '../App.css';
 import LocationInput from "./LocationInput";
 import Accordion from "./accordion";
 import { resp } from "../parse"
+import FirebaseTools from "../FirebaseTools";
 // import Firebase from "../Firebase";
 
 // const firebaseInstance = Firebase.getInstance();
@@ -80,8 +81,17 @@ export default function LocationComponent(props) {
           buses.push(leg.mode)
         }
       });
-      return buses.join(" -> ");
+      return buses.join(" ➞ ");
     } 
+
+    function parseBody(legs) {
+      const stops = [];
+      legs.forEach(leg => {
+        stops.push(leg.departureStop + " ➞ " + leg.arrivalStop)
+      })
+      return stops.join("   | Transfer to |   ");
+      // return stops;
+    }
 
     return (
         <>
@@ -96,12 +106,15 @@ export default function LocationComponent(props) {
                     <h1 className="font-bold text-black text-2xl p-3 self-start">Available Routes</h1>
                     {routes.map((route,index) => {
                         const header = parseAccordionHeader(route[0]);
+                        const stops = parseBody(route[0]);
+                        // const info = parseInfo(route[0]);
                         return (
                           <div key={index} className="w-3/4 mx-auto">
                             <Accordion
                             className="text-left"
-                            question={header}
-                            answer="Lorem ipsum"/>
+                            header={header}
+                            stops={stops}
+                            info="Lorem ipsum"/>
                           </div>
                         )
                     })}

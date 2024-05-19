@@ -41,7 +41,7 @@ export default function Accordion(props) {
           setShowContent(!showContent)
         }}
       >
-        {props.question}
+        {props.header}
         <ChevronDown className="sm:ml-4 ml-3 sm:min-h-[24px] sm:min-w-[24px] group-data-[state=open]:rotate-180 group-data-[state=closed]:0 min-h-[18px] min-w-[18px] transition-transform ease-in-out" />
       </button>
       <div
@@ -49,8 +49,19 @@ export default function Accordion(props) {
         style={{ height: showContent ? `${contentHeight}` : '0' }}
         className="overflow-hidden rounded-b-base bg-white font-base transition-[height] ease-in-out"
       >
-        <p className="p-4 md:p-5 text-sm md:text-base leading-relaxed md:leading-relaxed">
-          {props.answer}
+        <p className="p-4 md:p-5 text-sm md:text-base font-bold leading-relaxed md:leading-relaxed">
+          {/* {props.answer.forEach((leg) => {
+            return (
+              <div className="">
+                <h1>{leg.departureStop} ➞ {leg.arrivalStop}</h1> 
+                <h1>Transfer</h1>
+              </div>
+            )
+          })} */}
+          {props.stops}
+        </p>
+        <p className="p-4 md:p-5 text-sm md:text-base font-bold leading-relaxed md:leading-relaxed">
+          {props.info}
         </p>
       </div>
     </div>
