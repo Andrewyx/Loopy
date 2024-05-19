@@ -1,7 +1,6 @@
 // import { ClassValue } from 'clsx'
 
 import { cn } from '../lib/utils'
-import React from 'react'
 
 // type Props = {
 //   className?: ClassValue
@@ -10,35 +9,7 @@ import React from 'react'
 //   placeholder: string
 // }
 
-
-export function Input(props) {
-
-
-  function searchLocation(input) {
-    async function fetchData() {
-      console.log("fetching");
-      const req = await fetch('https://places.googleapis.com/v1/places:searchText', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': process.env.MAPS_KEY,
-        'X-Goog-FieldMask': 'places.displayName,places.formattedAddress'
-      },
-      // body: '{\n  "textQuery" : "Spicy Vegetarian Food in Sydney, Australia"\n}',
-      body: JSON.stringify({
-        'textQuery': input
-      })});
-      const resp = await req.json();
-      return resp;
-    }
-
-  const timeoutId = setTimeout(() => {
-    fetchData().then(resp => console.log(resp));
-  }, 2000); 
-    // console.log(input);
-
-  }
-
+export default function Input(props) {
   return (
     <input
       className={cn(
@@ -51,8 +22,6 @@ export function Input(props) {
       value={props.value}
       onChange={(e) => {
         props.setValue(e.target.value)
-        searchLocation(e.target.value)
-        
       }}
       aria-label={props.placeholder}
     />
