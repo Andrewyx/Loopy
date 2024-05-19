@@ -6,7 +6,7 @@ import 'dotenv/config'
 /**
  * Singleton for all Firebase-related tasks and information
  */
-export default class Firebase {
+export default class FirebaseTools {
     static #instance;
     #app;
     #auth;
@@ -31,6 +31,7 @@ export default class Firebase {
 
     /**
      * Instantiates the Firebase object or gets the single instance of it
+     * @returns FirebaseTools
      */
     static getInstance() {
         if (this.#instance) {
@@ -123,7 +124,7 @@ export default class Firebase {
      * @param {*One of the terminal stations of the bus} terminalOne 
      * @param {*Another of the terminal stations of the bus} terimalTwo 
      */
-    async writeNewBusline(busnum, terminalOne, terimalTwo) {
+    async writeNewBusline(busnum, terminalOne="none", terimalTwo="none") {
         const busRef = await addDoc(collection(this.#db, this.#collection, { merge: true}), {
             number: busnum,
             terminal1: terminalOne,
