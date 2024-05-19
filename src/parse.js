@@ -1,4 +1,4 @@
-const resp = {
+export const resp = {
     "routes": [
         {
             "legs": [
@@ -955,25 +955,28 @@ const resp = {
     ]
 }
 
-resp.routes.map((route) => {
-    route.legs.map((leg) => {
-        let cleanLegs = leg.steps.filter(value => Object.keys(value).length !== 0);
-        console.log("Route: ")
-        cleanLegs.map((step) => {
-            console.log(step.transitDetails.stopDetails.departureStop.name);
-            console.log(step.transitDetails.stopDetails.arrivalStop.name);
-            console.log(step.transitDetails.transitLine.name + " " + step.transitDetails.transitLine.nameShort);
-            console.log()
-        })
-    }
-)});
+// resp.routes.map((route) => {
+//     route.legs.map((leg) => {
+//         let cleanLegs = leg.steps.filter(value => Object.keys(value).length !== 0);
+//         console.log("Route: ")
+//         cleanLegs.map((step) => {
+//             console.log(step.transitDetails.stopDetails.departureStop.name);
+//             console.log(step.transitDetails.stopDetails.arrivalStop.name);
+//             console.log(step.transitDetails.transitLine.name + " " + step.transitDetails.transitLine.nameShort);
+//             console.log()
+//         })
+//     }
+// )});
 
-// let steps = resp.steps.filter(value => Object.keys(value).length !== 0);
+// // let steps = resp.steps.filter(value => Object.keys(value).length !== 0);
 
-// steps.map((step) => {
-//     console.log(step.transitDetails.stopDetails.departureStop.name);
-//     console.log(step.transitDetails.stopDetails.arrivalStop.name);
-//     console.log(step.transitDetails.transitLine.name + " " + step.transitDetails.transitLine.nameShort);
-//     console.log()
+// // steps.map((step) => {
+// //     console.log(step.transitDetails.stopDetails.departureStop.name);
+// //     console.log(step.transitDetails.stopDetails.arrivalStop.name);
+// //     console.log(step.transitDetails.transitLine.name + " " + step.transitDetails.transitLine.nameShort);
+// //     console.log()
 
-// })
+// // })
+
+const buses = ["014 Hastings","99B line"]
+console.log(buses.join(" -> "))

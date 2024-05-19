@@ -3,6 +3,8 @@ import Button from "./button";
 import { useState } from 'react'
 import '../App.css';
 import Input from "./input";
+import Accordion from "./accordion";
+import { resp } from "../parse"
 // import Firebase from "../Firebase";
 
 // const firebaseInstance = Firebase.getInstance();
@@ -59,12 +61,26 @@ export default function LocationComponent(props) {
     }    
 
     function handleClick() {
-        fetchData().then((resp) => {
-            const cleaned = parseData(resp);
-            setRoutes(cleaned);
-            props.setLocationInputted(true);
-        }).then(() => setSearched(true));
+        // fetchData().then((resp) => {
+        //     const cleaned = parseData(resp);
+        //     setRoutes(cleaned);
+        //     props.setLocationInputted(true);
+        // }).then(() => setSearched(true));
+
+        // temporary response
+        console.log(resp)
+        const cleaned = parseData(resp);
+        setRoutes(cleaned);
+        // props.setLocationInputted(true);
+        setSearched(true);
     }
+
+    function parseAccordionHeader(legs) {
+      const buses = []
+      legs.forEach(leg => buses.push(leg.mode));
+      return buses.join(" -> ");
+    } 
+
     return (
         <>
             <div className="w-3/4 mx-auto flex flex-row p-5 items-start align-center justify-evenly">
@@ -74,17 +90,17 @@ export default function LocationComponent(props) {
                 <Button onClick={handleClick}><FaSearch className="text-xl" /></Button>
             </div>
             {searched ?
-                <div className="w-3/4 mx-auto border-black border-4 rounded-lg bg-white">
+                <div className="w-3/4 mx-auto border-black border-4 rounded-lg bg-white flex-col align-center items-center justify-evenly">
                     <h1 className="font-bold text-black">Routes</h1>
-                    {routes.map((route) => {
-                        console.log(route);
-                         return route[0].map((leg,index) => {
-                          return(
-                            <div key={index} className="">
-                              <h1>{ leg.departureStop } - {leg.arrivalStop} ({leg.mode})</h1>
-                            </div>
-                          )
-                        })
+                    {routes.map((route,index) => {
+                        const header = parseAccordionHeader(route[0]);
+                        return (
+                          <Accordion
+                          className=""
+                          key={index}
+                          question={header}
+                          answer="Lorem ipsum"/>
+                        )
                     })}
                 </div>
                 : null}
