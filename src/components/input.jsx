@@ -2,13 +2,6 @@
 
 import { cn } from '../lib/utils'
 
-// type Props = {
-//   className?: ClassValue
-//   value: string
-//   setValue: React.Dispatch<React.SetStateAction<string>>
-//   placeholder: string
-// }
-
 export default function Input(props) {
   return (
     <input

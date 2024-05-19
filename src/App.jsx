@@ -9,6 +9,7 @@ import Input from './components/input'
 
 import './App.css'
 import LocationComponent from './components/LocationComponent';
+import RatingComponent from './components/RatingComponent';
 
 function App() {
   const [locationInputted, setLocationInputted] = useState(false);
@@ -19,7 +20,10 @@ function App() {
         <div className="bg-white h-[10%] border-b-black border-b-4 mb-10 px-10 flex flex-row justify-between align-center items-center">
           <h1 className="text-3xl text-black font-bold">Loopy: Rate your route!</h1>
         </div>
-        {locationInputted ? null : <LocationComponent setLocationInputted={setLocationInputted}/>}
+        {locationInputted ? 
+          <RatingComponent setLocationInputted={setLocationInputted}/> 
+          : <LocationComponent setLocationInputted={setLocationInputted}/>
+        }
       </div>
     </>
   )
