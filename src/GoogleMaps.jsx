@@ -1,8 +1,11 @@
+const { RoutesClient } = require('@googlemaps/routing').v2;
+
 export default class GoogleMaps {
     static #instance;
+    #routingClient;
 
     constructor() {
-        // ASSIGN FIELDS HERE
+        this.#routingClient = new RoutesClient({ apiKey: process.env.GOOGLE_MAPS_API_KEY });
     }
 
     /**
@@ -13,7 +16,7 @@ export default class GoogleMaps {
             return this.#instance;
         }
         else {
-            this.#instance = new Firebase();
+            this.#instance = new GoogleMaps();
             return this.#instance; 
         }
     }
@@ -30,5 +33,19 @@ export default class GoogleMaps {
         else {
             return false;
         }
-    }    
+    }
+
+    async callComputeRoutes(origin, destination) {
+        try {
+            const response = await this.#routingClient.computeRoutes({
+                origin: origin,
+                destination: destination,
+                mode: 'transit',
+                
+            });
+            return response;
+        } catch (error) {
+            console.error('Error in callComputeRoutes:', error);
+        }
+    }
 }
