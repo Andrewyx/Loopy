@@ -11,7 +11,6 @@ export default class FirebaseTools {
     #auth;
     #db;
     #collection;
-    #routes;
     #firebaseConfig = {
         apiKey: process.env.API_KEY,
         authDomain: "loopy-423720.firebaseapp.com",
@@ -127,17 +126,5 @@ export default class FirebaseTools {
             terminal2: terimalTwo
           }, { merge:true });
         await console.log("Busline written with ID: ", busnum);
-    }
-
-    getRoutes() {
-        if (this.#routes) {
-            return this.#routes;
-        } else {
-            console.log("error");
-        }
-    }
-
-    setRoutes(routes) {
-        this.#routes = routes;
     }
 }
