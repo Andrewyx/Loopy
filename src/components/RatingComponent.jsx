@@ -1,9 +1,34 @@
 import FirebaseTools from "../FirebaseTools";
 import Button from "./button";
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
+import * as papa from 'papaparse'
 import { Lines } from "../Lines";
 
 export default function RatingComponent(props) {
+
+    // const [lines, setLines] = useState([])
+    const options = [];
+
+    useEffect(() => {
+        fetch("Lines.csv")
+        .then(resp => resp.text())
+        .then(result => {
+            const lines = [];
+            const data = papa.parse(result);
+            data.data.forEach((entry) => lines.push(entry[0] + " " + entry[1]));
+            return lines
+            // console.log(lines.slice(1));
+        })
+        .then(lines => {
+            lines.slice(1,-1).forEach((line) => options.push({
+                value: line,
+                label: line,
+            }))
+        });
+    },[])
+
+
     const FIREBASE = FirebaseTools.getInstance();
     function handleSubmit(e) {
         e.preventDefault();
@@ -48,7 +73,7 @@ export default function RatingComponent(props) {
                         <h1 className="text-black font-bold text-lg mb-1">Bus line</h1>
                         {/* <input className="border-2 border-black rounded-lg" name="busnumber" placeholder=" Bus Number"></input> */}
                     <Select
-                        className="py-3"
+                        className="w-1/2 border-black border-2 rounded-lg"
                         classNamePrefix="select"
                         isClearable={true}
                         isSearchable={true}
