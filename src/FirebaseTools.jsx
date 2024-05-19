@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, runTransaction, addDoc, collection } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import 'dotenv/config'
 
 /**
  * Singleton for all Firebase-related tasks and information
@@ -34,13 +33,11 @@ export default class FirebaseTools {
      * @returns FirebaseTools
      */
     static getInstance() {
-        if (this.#instance) {
-            return this.#instance;
+        if (this.#instance == null || this.#instance == undefined) {
+            this.#instance = new FirebaseTools();
+            
         }
-        else {
-            this.#instance = new Firebase();
-            return this.#instance; 
-        }
+        return this.#instance; 
     }
 
     /**

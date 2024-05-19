@@ -15,14 +15,15 @@ export default function RatingComponent(props) {
         const commentRating = formJson.comment;
         const busNumber = formJson.busnumber; 
 
-        if (typeof safetyRating !== "number" || typeof reliabilityRating !== "number" 
+        if (typeof parseInt(safetyRating) !== "number" || typeof parseInt(reliabilityRating) !== "number" 
         || typeof commentRating !== "string"|| typeof busNumber !== "string") {
             console.log("Invalid ID Type");
+            parseInt("dsa");
             return false;
         }
 
         if (FirebaseTools.isInstaniated()) {
-            FIREBASE.writeNewBusline(busNumber);
+            FIREBASE.writeNewBusline(busNumber.toString());
         }
     }
 
