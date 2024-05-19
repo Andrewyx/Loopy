@@ -2,7 +2,7 @@ import { FaArrowRight, FaSearch } from "react-icons/fa";
 import Button from "./button";
 import { useState } from 'react'
 import '../App.css';
-import Input from "./input";
+import LocationInput from "./LocationInput";
 import Accordion from "./accordion";
 import { resp } from "../parse"
 // import Firebase from "../Firebase";
@@ -50,10 +50,6 @@ export default function LocationComponent(props) {
                                     mode: step.transitDetails.transitLine.nameShort + " " + step.transitDetails.transitLine.name,
                                 }
                                 newRoute.push(leg);
-                                // console.log(step.transitDetails.stopDetails.departureStop.name);
-                                // console.log(step.transitDetails.stopDetails.arrivalStop.name);
-                                // console.log(step.transitDetails.transitLine.name + " " + step.transitDetails.transitLine.nameShort);
-                                // console.log()
                             });
                             return newRoute; })
                     });
@@ -77,29 +73,36 @@ export default function LocationComponent(props) {
 
     function parseAccordionHeader(legs) {
       const buses = []
-      legs.forEach(leg => buses.push(leg.mode));
+      legs.forEach(leg => {
+        if (leg.mode.includes("undefined")) {
+          buses.push(leg.mode.split(" ")[1] + " line")
+        } else {
+          buses.push(leg.mode)
+        }
+      });
       return buses.join(" -> ");
     } 
 
     return (
         <>
-            <div className="w-3/4 mx-auto flex flex-row p-5 items-start align-center justify-evenly">
-                <Input className="w-1/3" valuee={from} setValue={setFrom} placeholder="From" />
+            <div className="w-3/4 mx-auto mb-10 flex flex-row p-5 items-start align-center justify-evenly">
+                <LocationInput className="w-1/3" valuee={from} setValue={setFrom} placeholder="From" />
                 <FaArrowRight className="pt-1 text-center text-5xl" />
-                <Input className="w-1/3" value={to} setValue={setTo} placeholder="To" />
+                <LocationInput className="w-1/3" value={to} setValue={setTo} placeholder="To" />
                 <Button onClick={handleClick}><FaSearch className="text-xl" /></Button>
             </div>
             {searched ?
-                <div className="w-3/4 mx-auto border-black border-4 rounded-lg bg-white flex-col align-center items-center justify-evenly">
-                    <h1 className="font-bold text-black">Routes</h1>
+                <div className="w-3/4 mx-auto p-5 pb-10 border-black border-4 rounded-lg bg-white flex flex-col items-center space-y-5">
+                    <h1 className="font-bold text-black text-2xl p-3 self-start">Available Routes</h1>
                     {routes.map((route,index) => {
                         const header = parseAccordionHeader(route[0]);
                         return (
-                          <Accordion
-                          className=""
-                          key={index}
-                          question={header}
-                          answer="Lorem ipsum"/>
+                          <div key={index} className="w-3/4 mx-auto">
+                            <Accordion
+                            className="text-left"
+                            question={header}
+                            answer="Lorem ipsum"/>
+                          </div>
                         )
                     })}
                 </div>

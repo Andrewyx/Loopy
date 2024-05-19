@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { FaArrowRight } from "react-icons/fa";
 import { FaSearch } from 'react-icons/fa';
 import Button from './components/button';
-import Input from './components/input'
+import Input from './components/LocationInput'
 // import { RoutesClient } from "@googlemaps/routing"
 
 import './App.css'
@@ -16,13 +16,12 @@ function App() {
 
   return (
     <>
-      <div className="w-full h-screen bg-bg">
+      <div className="h-screen">
         <div className="bg-white h-[10%] border-b-black border-b-4 mb-10 px-10 flex flex-row justify-between align-center items-center">
-          <h1 className="text-3xl text-black font-bold">Loopy: Rate your route!</h1>
+          <h1 className="text-3xl text-black font-bold">Loopy: Rate your transit route</h1>
         </div>
           <LocationComponent setLocationInputted={setLocationInputted}/>
           <RatingComponent setLocationInputted={setLocationInputted}/> 
-
       </div>
     </>
   )

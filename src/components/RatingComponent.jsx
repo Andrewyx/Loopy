@@ -1,4 +1,5 @@
 import FirebaseTools from "../FirebaseTools";
+import Button from "./button";
 
 export default function RatingComponent(props) {
     const FIREBASE = FirebaseTools.getInstance();
@@ -7,6 +8,7 @@ export default function RatingComponent(props) {
   
         const formData = new FormData(e.target);
         const formJson = Object.fromEntries(formData.entries());
+        console.log(formJson)
 
         const safetyRating = formJson.safety;
         const reliabilityRating = formJson.reliability;
@@ -21,31 +23,50 @@ export default function RatingComponent(props) {
             return false;
         }
 
-        if (FirebaseTools.isInstaniated()) {
-            FIREBASE.writeNewBusline(busNumber.toString());
-            FIREBASE.writeNewRatingToBusline(
-                {
-                    commtent: commentRating,
-                    safety: safetyRating,
-                    reliability: reliabilityRating,
-                    overall: overallRating
-                }, 
-                busNumber.toString()
-            );
-        }
+        // if (FirebaseTools.isInstaniated()) {
+        //     FIREBASE.writeNewBusline(busNumber.toString());
+        //     FIREBASE.writeNewRatingToBusline(
+        //         {
+        //             commtent: commentRating,
+        //             safety: safetyRating,
+        //             reliability: reliabilityRating,
+        //             overall: overallRating
+        //         }, 
+        //         busNumber.toString()
+        //     );
+        // }
     }
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <input className="ratingInput" name="safety" placeholder="Safety Rating"></input>
-                <input className="ratingInput" name="reliability" placeholder="Reliability Rating"></input>
-                <input className="ratingInput" name="busnumber" placeholder="Bus Number"></input>
-                <input className="ratingInput" name="overall" placeholder="Overall"></input>
-                {/* ADD AUTOCOMPLETE */}
-                <input className="ratingInput" name="comment" placeholder="Comment"></input>
-                <button type="submit">Submit</button>
-            </form>
+            <div className="w-3/4 mx-auto my-10 bg-white border-black border-4 rounded-lg p-5">
+                <h1 className="text-black font-bold text-3xl py-3">Rate a bus line</h1>    
+                <form onSubmit={handleSubmit} id="mainForm">
+                    <div className="py-3">
+                        <h1 className="text-black font-bold text-lg mb-1">Bus line</h1>
+                        <input className="border-2 border-black rounded-lg" name="busnumber" placeholder=" Bus Number"></input>
+                    </div>
+                    <div className="py-3">
+                        <h1 className="text-black font-bold text-lg mb-1">Safety</h1>
+                        <input className="border-2 border-black rounded-lg" name="safety" placeholder=" Rating out of 10"></input>
+                    </div>
+                    <div className="py-3">
+                        <h1 className="text-black font-bold text-lg mb-1">Reliability</h1>
+                        <input className="border-2 border-black rounded-lg" name="reliability" placeholder=" Rating out of 10"></input>
+                    </div>
+                    <div className="py-3">
+                        <h1 className="text-black font-bold text-lg mb-1">Overall</h1>
+                        <input className="border-2 border-black rounded-lg" name="overall" placeholder=" Rating out of 10"></input>
+                    </div>
+                    {/* ADD AUTOCOMPLETE */}
+                    <div className="py-3">
+                        <h1 className="text-black font-bold text-lg mb-1">Comments</h1>
+                        {/* <input className="border-2 border-black rounded-lg w-1/2" name="comment" type="" placeholder=" Type your comments here..."></input> */}
+                        <textarea className="border-2 border-black rounded-lg w-1/2" name="comment" form="mainForm" placeholder=" Enter your comments here..."></textarea>
+                    </div>
+                    <Button className="mt-3" type="submit">Submit</Button>
+                </form>
+            </div>
         </>
     )
 }

@@ -28,7 +28,7 @@ export default function Accordion(props) {
   return (
     <div
       data-state={showContent ? 'open' : 'closed'}
-      className="w-[500px] group rounded-base border-2 border-black shadow-base"
+      className="group rounded-base border-2 border-black shadow-base"
     >
       <button
         role="button"
