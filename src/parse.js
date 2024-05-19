@@ -1,4 +1,4 @@
-export const resp = {
+export const respLong = {
     "routes": [
         {
             "legs": [
@@ -978,5 +978,83 @@ export const resp = {
 
 // // })
 
-const buses = ["014 Hastings","99B line"]
-console.log(buses.join(" -> "))
+export const respShort = {
+    "routes": [
+        {
+            "legs": [
+                {
+                    "steps": [
+                        {},
+                        {},
+                        {},
+                        {
+                            "transitDetails": {
+                                "stopDetails": {
+                                    "arrivalStop": {
+                                        "name": "UBC Exchange @ Bay 11",
+                                        "location": {
+                                            "latLng": {
+                                                "latitude": 49.26581,
+                                                "longitude": -123.248129
+                                            }
+                                        }
+                                    },
+                                    "arrivalTime": "2024-05-19T06:40:13Z",
+                                    "departureStop": {
+                                        "name": "WB W Broadway @ Bayswater St",
+                                        "location": {
+                                            "latLng": {
+                                                "latitude": 49.264221,
+                                                "longitude": -123.17171099999999
+                                            }
+                                        }
+                                    },
+                                    "departureTime": "2024-05-19T06:25:53Z"
+                                },
+                                "localizedValues": {
+                                    "arrivalTime": {
+                                        "time": {
+                                            "text": "11:40 PM"
+                                        },
+                                        "timeZone": "America/Vancouver"
+                                    },
+                                    "departureTime": {
+                                        "time": {
+                                            "text": "11:25 PM"
+                                        },
+                                        "timeZone": "America/Vancouver"
+                                    }
+                                },
+                                "headsign": "Ubc",
+                                "transitLine": {
+                                    "agencies": [
+                                        {
+                                            "name": "TransLink",
+                                            "phoneNumber": "+1 604-953-3333",
+                                            "uri": "https://www.translink.ca/"
+                                        }
+                                    ],
+                                    "name": "Hastings/UBC",
+                                    "nameShort": "014",
+                                    "vehicle": {
+                                        "name": {
+                                            "text": "Bus"
+                                        },
+                                        "type": "BUS",
+                                        "iconUri": "//maps.gstatic.com/mapfiles/transit/iw2/6/bus2.png"
+                                    }
+                                },
+                                "stopCount": 19
+                            }
+                        },
+                        {},
+                        {}
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+// const buses = ["014 Hastings","99B line"]
+// console.log(buses.join(" -> "))

@@ -49,16 +49,16 @@ export default function RatingComponent(props) {
         }
 
         if (FirebaseTools.isInstaniated()) {
-            // FIREBASE.writeNewRatingToBusline(
-            //     {
-            //         busline: busRouteString,
-            //         comment: commentRating,
-            //         safety: parseInt(safetyRating),
-            //         reliability: parseInt(reliabilityRating),
-            //         overall: parseInt(overallRating)
-            //     }, 
-            //     busRouteString.toString()
-            // );
+            FIREBASE.writeNewRatingToBusline(
+                {
+                    busline: busRouteString,
+                    comment: commentRating,
+                    safety: parseInt(safetyRating),
+                    reliability: parseInt(reliabilityRating),
+                    overall: parseInt(overallRating)
+                }, 
+                busRouteString.toString()
+            );
 
             FIREBASE.getAverageRatingsForBusline(busRouteString).then((averages) => console.log(averages));
         }

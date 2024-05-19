@@ -4,7 +4,7 @@ import { useState } from 'react'
 import '../App.css';
 import LocationInput from "./LocationInput";
 import Accordion from "./accordion";
-import { resp } from "../parse"
+import { respShort, respLong } from "../parse"
 import FirebaseTools from "../FirebaseTools";
 // import Firebase from "../Firebase";
 
@@ -65,8 +65,9 @@ export default function LocationComponent(props) {
         // }).then(() => setSearched(true));
 
         // temporary response
-        console.log(resp)
-        const cleaned = parseData(resp);
+        // console.log(resp)
+        // const cleaned = parseData(respShort);
+        const cleaned = parseData(respLong);
         setRoutes(cleaned);
         // props.setLocationInputted(true);
         setSearched(true);
@@ -114,7 +115,7 @@ export default function LocationComponent(props) {
                             className="text-left"
                             header={header}
                             stops={stops}
-                            info="Lorem ipsum"/>
+                            info={route[0]}/>
                           </div>
                         )
                     })}
