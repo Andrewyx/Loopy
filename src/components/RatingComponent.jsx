@@ -35,32 +35,32 @@ export default function RatingComponent(props) {
   
         const formData = new FormData(e.target);
         const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson)
-
         const safetyRating = formJson.safety;
         const reliabilityRating = formJson.reliability;
         const commentRating = formJson.comment;
-        const busNumber = formJson.busnumber; 
+        const busRouteString = formJson.busnumber; 
         const overallRating = formJson.overall;
 
         if (typeof parseInt(safetyRating) !== "number" || typeof parseInt(reliabilityRating) !== "number" 
-        || typeof parseInt(overallRating) !== "number" || typeof commentRating !== "string"|| typeof busNumber !== "string") {
+        || typeof parseInt(overallRating) !== "number" || typeof commentRating !== "string"|| typeof busRouteString !== "string") {
             console.log("Invalid ID Type");
             parseInt("dsa");
             return false;
         }
 
         if (FirebaseTools.isInstaniated()) {
-            FIREBASE.writeNewBusline(busNumber.toString());
-            FIREBASE.writeNewRatingToBusline(
-                {
-                    commtent: commentRating,
-                    safety: safetyRating,
-                    reliability: reliabilityRating,
-                    overall: overallRating
-                }, 
-                busNumber.toString()
-            );
+            // FIREBASE.writeNewRatingToBusline(
+            //     {
+            //         busline: busRouteString,
+            //         comment: commentRating,
+            //         safety: parseInt(safetyRating),
+            //         reliability: parseInt(reliabilityRating),
+            //         overall: parseInt(overallRating)
+            //     }, 
+            //     busRouteString.toString()
+            // );
+
+            FIREBASE.getAverageRatingsForBusline(busRouteString).then((averages) => console.log(averages));
         }
     }
 

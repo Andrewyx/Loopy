@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, runTransaction, addDoc, collection, setDoc } from "firebase/firestore";
+import { getFirestore, doc, runTransaction, addDoc, collection, setDoc, query, where, getDocs, QueryDocumentSnapshot } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 /**
@@ -24,13 +24,13 @@ export default class FirebaseTools {
         this.#app = initializeApp(this.#firebaseConfig);
         this.#db = getFirestore(this.#app);
         this.#auth = getAuth();   
-        this.#collection ="busline";
+        this.#collection ="ratings";
     }
 
     /**
      * Instantiates the Firebase object or gets the single instance of it
      * 
-     * @returns FirebaseTools
+     * @returns {FirebaseTools}
      */
     static getInstance() {
         if (this.#instance == null || this.#instance == undefined) {
@@ -76,7 +76,7 @@ export default class FirebaseTools {
      * 
      * @param {*Series of string path(s) to get under 'busline' collection to get} path 
      * 
-     * @returns An DocumentData Object containing all fields in the document.
+     * @returns {import("firebase/firestore").DocumentData}
      */
     async getDocument(...path) {
         // Create a reference to the  doc.
@@ -106,25 +106,77 @@ export default class FirebaseTools {
     async writeNewRatingToBusline(content, busline, subCollectionPath="ratings") {
         // Set the value of 'NYC'
         const docRef = await addDoc(
-            collection(this.#db, this.#collection, busline, subCollectionPath), 
-            content
+            collection(this.#db, this.#collection), 
+            content, {merge:true}
         );
-        console.log("Document written with ID: ", docRef.id);
+    }
+
+    // /**
+    //  * Function to add new Bus entry into the DB
+    //  * 
+    //  * @param {*Bus Number to add} busnum 
+    //  * @param {*One of the terminal stations of the bus} terminalOne 
+    //  * @param {*Another of the terminal stations of the bus} terimalTwo 
+    //  */
+    // async writeNewBusline(busnum, terminalOne="none", terimalTwo="none") {
+    //     const busRef = await setDoc(doc(this.#db, this.#collection, busnum), {
+    //         number: busnum,
+    //         terminal1: terminalOne,
+    //         terminal2: terimalTwo
+    //       }, { merge:true });
+    //     console.log("Busline written with ID: ", busnum);
+    // }
+
+    /**
+     * 
+     * @param {*The Busline String to match and get} busline 
+     * 
+     * @returns {QueryDocumentSnapshot[]}
+     */
+    async getAllByBusline(busline) {
+        const q = query(collection(this.#db, this.#collection), where("busline", "==", busline));
+        const querySnapshot = await getDocs(q);
+        let ratings = [];
+
+        await querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        ratings.push(doc.data());
+        });
+        return ratings;
     }
 
     /**
-     * Function to add new Bus entry into the DB
      * 
-     * @param {*Bus Number to add} busnum 
-     * @param {*One of the terminal stations of the bus} terminalOne 
-     * @param {*Another of the terminal stations of the bus} terimalTwo 
+     * @param {String for the bus line to query} busline 
+     * @returns Json object with list of comments and other fields
      */
-    async writeNewBusline(busnum, terminalOne="none", terimalTwo="none") {
-        const busRef = await setDoc(doc(this.#db, this.#collection, busnum), {
-            number: busnum,
-            terminal1: terminalOne,
-            terminal2: terimalTwo
-          }, { merge:true });
-        await console.log("Busline written with ID: ", busnum);
+    async getAverageRatingsForBusline(busline) {
+        let ratings = await this.getAllByBusline(busline);
+        let comments = []
+        let avgOverallRating = 0;
+        let avgReliabilityRating = 0;
+        let avgSafetyRating = 0;
+
+        ratings.forEach((rating) => {
+            comments.push(rating.busline);
+            avgOverallRating += rating.overall;
+            avgReliabilityRating += rating.reliability;
+            avgSafetyRating += rating.safety;
+        });
+
+
+        avgOverallRating /= ratings.length;
+        avgReliabilityRating /= ratings.length;
+        avgSafetyRating /= ratings.length;
+
+        const avgRatings = {
+            busline: busline,
+            comment: comments,
+            safety: parseFloat(avgSafetyRating.toFixed(1)),
+            reliability: parseFloat(avgReliabilityRating.toFixed(1)),
+            overall: parseFloat(avgOverallRating.toFixed(1))
+        }
+        return avgRatings
     }
+
 }
