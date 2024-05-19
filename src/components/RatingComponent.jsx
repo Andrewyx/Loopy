@@ -1,5 +1,7 @@
 import FirebaseTools from "../FirebaseTools";
 import Button from "./button";
+import Select from 'react-select'
+import { Lines } from "../Lines";
 
 export default function RatingComponent(props) {
     const FIREBASE = FirebaseTools.getInstance();
@@ -23,18 +25,18 @@ export default function RatingComponent(props) {
             return false;
         }
 
-        // if (FirebaseTools.isInstaniated()) {
-        //     FIREBASE.writeNewBusline(busNumber.toString());
-        //     FIREBASE.writeNewRatingToBusline(
-        //         {
-        //             commtent: commentRating,
-        //             safety: safetyRating,
-        //             reliability: reliabilityRating,
-        //             overall: overallRating
-        //         }, 
-        //         busNumber.toString()
-        //     );
-        // }
+        if (FirebaseTools.isInstaniated()) {
+            FIREBASE.writeNewBusline(busNumber.toString());
+            FIREBASE.writeNewRatingToBusline(
+                {
+                    commtent: commentRating,
+                    safety: safetyRating,
+                    reliability: reliabilityRating,
+                    overall: overallRating
+                }, 
+                busNumber.toString()
+            );
+        }
     }
 
     return (
@@ -44,7 +46,15 @@ export default function RatingComponent(props) {
                 <form onSubmit={handleSubmit} id="mainForm">
                     <div className="py-3">
                         <h1 className="text-black font-bold text-lg mb-1">Bus line</h1>
-                        <input className="border-2 border-black rounded-lg" name="busnumber" placeholder=" Bus Number"></input>
+                        {/* <input className="border-2 border-black rounded-lg" name="busnumber" placeholder=" Bus Number"></input> */}
+                    <Select
+                        className="py-3"
+                        classNamePrefix="select"
+                        isClearable={true}
+                        isSearchable={true}
+                        name="busnumber"
+                        options={Lines}
+                    />
                     </div>
                     <div className="py-3">
                         <h1 className="text-black font-bold text-lg mb-1">Safety</h1>
@@ -58,7 +68,6 @@ export default function RatingComponent(props) {
                         <h1 className="text-black font-bold text-lg mb-1">Overall</h1>
                         <input className="border-2 border-black rounded-lg" name="overall" placeholder=" Rating out of 10"></input>
                     </div>
-                    {/* ADD AUTOCOMPLETE */}
                     <div className="py-3">
                         <h1 className="text-black font-bold text-lg mb-1">Comments</h1>
                         {/* <input className="border-2 border-black rounded-lg w-1/2" name="comment" type="" placeholder=" Type your comments here..."></input> */}
