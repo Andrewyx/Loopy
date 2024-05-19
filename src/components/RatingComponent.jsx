@@ -1,5 +1,3 @@
-import { useState } from "react";
-import Input from "./input";
 import FirebaseTools from "../FirebaseTools";
 
 export default function RatingComponent(props) {
@@ -14,9 +12,10 @@ export default function RatingComponent(props) {
         const reliabilityRating = formJson.reliability;
         const commentRating = formJson.comment;
         const busNumber = formJson.busnumber; 
+        const overallRating = formJson.overall;
 
         if (typeof parseInt(safetyRating) !== "number" || typeof parseInt(reliabilityRating) !== "number" 
-        || typeof commentRating !== "string"|| typeof busNumber !== "string") {
+        || typeof parseInt(overallRating) !== "number" || typeof commentRating !== "string"|| typeof busNumber !== "string") {
             console.log("Invalid ID Type");
             parseInt("dsa");
             return false;
@@ -24,6 +23,15 @@ export default function RatingComponent(props) {
 
         if (FirebaseTools.isInstaniated()) {
             FIREBASE.writeNewBusline(busNumber.toString());
+            FIREBASE.writeNewRatingToBusline(
+                {
+                    commtent: commentRating,
+                    safety: safetyRating,
+                    reliability: reliabilityRating,
+                    overall: overallRating
+                }, 
+                busNumber.toString()
+            );
         }
     }
 
@@ -33,6 +41,7 @@ export default function RatingComponent(props) {
                 <input className="ratingInput" name="safety" placeholder="Safety Rating"></input>
                 <input className="ratingInput" name="reliability" placeholder="Reliability Rating"></input>
                 <input className="ratingInput" name="busnumber" placeholder="Bus Number"></input>
+                <input className="ratingInput" name="overall" placeholder="Overall"></input>
                 {/* ADD AUTOCOMPLETE */}
                 <input className="ratingInput" name="comment" placeholder="Comment"></input>
                 <button type="submit">Submit</button>

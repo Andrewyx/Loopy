@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, runTransaction, addDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, runTransaction, addDoc, collection, setDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 /**
@@ -30,12 +30,12 @@ export default class FirebaseTools {
 
     /**
      * Instantiates the Firebase object or gets the single instance of it
+     * 
      * @returns FirebaseTools
      */
     static getInstance() {
         if (this.#instance == null || this.#instance == undefined) {
             this.#instance = new FirebaseTools();
-            
         }
         return this.#instance; 
     }
@@ -81,7 +81,7 @@ export default class FirebaseTools {
      */
     async getDocument(...path) {
         // Create a reference to the  doc.
-        const docRef = doc(this.#db, path);
+        const docRef = doc(this.#db, ...path);
 
         try {
         const result = await runTransaction(this.#db, async (transaction) => {
@@ -100,7 +100,7 @@ export default class FirebaseTools {
     /**
      * Function for writing new rating to a given bus line
      * 
-     * @param {*JSON containing rating information} content 
+     * @param {*JSON Object containing rating information} content 
      * @param {*String with the bus line to create a new rating for} busline 
      * @param {*Optional field} subCollectionPath 
      */
@@ -108,8 +108,7 @@ export default class FirebaseTools {
         // Set the value of 'NYC'
         const docRef = await addDoc(
             collection(this.#db, this.#collection, busline, subCollectionPath), 
-            content,
-            { merge: true }
+            content
         );
         console.log("Document written with ID: ", docRef.id);
     }
@@ -122,12 +121,12 @@ export default class FirebaseTools {
      * @param {*Another of the terminal stations of the bus} terimalTwo 
      */
     async writeNewBusline(busnum, terminalOne="none", terimalTwo="none") {
-        const busRef = await addDoc(collection(this.#db, this.#collection, { merge: true}), {
+        const busRef = await setDoc(doc(this.#db, this.#collection, busnum), {
             number: busnum,
             terminal1: terminalOne,
             terminal2: terimalTwo
-          });
-        console.log("Busline written with ID: ", busRef.id);
+          }, { merge:true });
+        await console.log("Busline written with ID: ", busnum);
     }
 
     getRoutes() {
