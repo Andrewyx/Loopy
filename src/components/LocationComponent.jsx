@@ -58,19 +58,19 @@ export default function LocationComponent(props) {
     }    
 
     function handleClick() {
-        // fetchData().then((resp) => {
-        //     const cleaned = parseData(resp);
-        //     setRoutes(cleaned);
-        //     props.setLocationInputted(true);
-        // }).then(() => setSearched(true));
+        fetchData().then((resp) => {
+            const cleaned = parseData(resp);
+            setRoutes(cleaned);
+            props.setLocationInputted(true);
+        }).then(() => setSearched(true));
 
-        // temporary response
-        // console.log(resp)
-        // const cleaned = parseData(respShort);
-        const cleaned = parseData(respLong);
-        setRoutes(cleaned);
-        // props.setLocationInputted(true);
-        setSearched(true);
+        // // temporary response
+        // // console.log(resp)
+        // // const cleaned = parseData(respShort);
+        // const cleaned = parseData(respLong);
+        // setRoutes(cleaned);
+        // // props.setLocationInputted(true);
+        // setSearched(true);
     }
 
     function parseAccordionHeader(legs) {

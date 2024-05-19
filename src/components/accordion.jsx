@@ -27,6 +27,10 @@ export default function Accordion(props) {
     }
   }, [showContent])
 
+  async function fetchData() {
+    
+  }
+
   function parseInfo(legs) {
     const FIREBASE = FirebaseTools.getInstance();
     // console.log(legs)
@@ -38,6 +42,7 @@ export default function Accordion(props) {
       legs.forEach(leg => {
         // const mode = leg.mode;
         // console.log(leg.mode.replace("/","-").replace(" ","-"))
+        // const query = FIREBASE.getAverageRatingsForBusline(leg.mode.replace("/","-").replace(" ","-").replace("0",""))
         const query = FIREBASE.getAllByBusline(leg.mode.replace("/","-").replace(" ","-").replace("0",""))
         query.then(resp => {
           // console.log(resp[0] !== undefined)
@@ -46,9 +51,7 @@ export default function Accordion(props) {
               setRatings(resp[0])
             }
           }
-        }
-        )
-        // console.log("query for: " + mode);
+        })
       }) 
     }
     // const min = 1;
