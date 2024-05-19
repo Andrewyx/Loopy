@@ -12,6 +12,7 @@ export default class Firebase {
     #auth;
     #db;
     #collection;
+    #routes;
     #firebaseConfig = {
         apiKey: process.env.API_KEY,
         authDomain: "loopy-423720.firebaseapp.com",
@@ -129,5 +130,17 @@ export default class Firebase {
             terminal2: terimalTwo
           });
         console.log("Busline written with ID: ", busRef.id);
+    }
+
+    getRoutes() {
+        if (this.#routes) {
+            return this.#routes;
+        } else {
+            console.log("error");
+        }
+    }
+
+    setRoutes(routes) {
+        this.#routes = routes;
     }
 }
