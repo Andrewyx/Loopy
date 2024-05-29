@@ -1,8 +1,7 @@
-# React + Vite
+# Loopy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Loopy is a community-driven ratings aggregation and trip planning site that takes origin and destination inputs and displays ratings for each bus/skytrain Users can also add ratings for each of the aformentioned criteria to transit lines they have taken to help inform the Metro Vancouver community on whether they may want to reconsider their travel routes!
 
-Currently, two official plugins are available:
+## Technologies
+Built using a React/Vite frontend with Tailwind CSS, together with Firebase and client-side Google Maps Routing API calls.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
